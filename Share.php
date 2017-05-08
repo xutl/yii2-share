@@ -17,6 +17,11 @@ use yii\helpers\Json;
  */
 class Share extends Widget
 {
+    public $message;
+    public $summary;
+    public $picture;
+    public $url;
+
     /**
      * @inheritdoc
      */
