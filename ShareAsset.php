@@ -10,10 +10,10 @@ use Yii;
 use yii\web\AssetBundle;
 
 /**
- * Class LayuiAsset
- * @package xutl\bootstrap\datetimepicker
+ * Class ShareAsset
+ * @package xutl\share
  */
-class LayuiAsset extends AssetBundle
+class ShareAsset extends AssetBundle
 {
     /**
      * @inherit
