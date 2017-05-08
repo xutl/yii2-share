@@ -9,8 +9,28 @@ namespace xutl\share;
 
 use Yii;
 use yii\base\Widget;
+use yii\helpers\Json;
 
+/**
+ * Class Share
+ * @package xutl\share
+ */
 class Share extends Widget
 {
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+        if (!isset ($this->options ['id'])) {
+            $this->options ['id'] = $this->getId();
+        }
+    }
 
+    public function run()
+    {
+        ShareAsset::register($this->view);
+        $this->view->registerJs("jQuery('{$this->options['id']}').share();");
+    }
 }
