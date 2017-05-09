@@ -8,6 +8,7 @@
 namespace xutl\share;
 
 use Yii;
+use yii\helpers\Html;
 use yii\base\Widget;
 use yii\helpers\Json;
 
@@ -17,10 +18,30 @@ use yii\helpers\Json;
  */
 class Share extends Widget
 {
+    /**
+     * @var string
+     */
     public $message;
+
+    /**
+     * @var string
+     */
     public $summary;
+
+    /**
+     * @var string
+     */
     public $picture;
+
+    /**
+     * @var string
+     */
     public $url;
+
+    /**
+     * @var array
+     */
+    public $items;
 
     /**
      * @inheritdoc
@@ -35,6 +56,13 @@ class Share extends Widget
 
     public function run()
     {
+        echo Html::beginTag('div',$this->options);
+
+        echo Html::ul($this->items);
+
+        echo Html::endTag('div');
+            echo Html::activeTextArea($this->model, $this->attribute, $this->options);
+
         ShareAsset::register($this->view);
         $this->view->registerJs("jQuery('{$this->options['id']}').share();");
     }
