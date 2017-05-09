@@ -1,6 +1,6 @@
-$.fn.share = function () {
+jQuery.fn.share = function () {
   return this.each(function() {
-    var $container = $(this),
+    var $container = jQuery(this),
       instance;
     //initialize the Share.js
     instance = new Share($container);

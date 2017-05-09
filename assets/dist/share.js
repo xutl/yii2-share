@@ -27,135 +27,165 @@ function _open(url) {
 }
 
 function weixin($btn, params) {
-  if ($('.weixin-share-modal').length === 0) {
-    $('body').append(makeWeixinModal(params));
-    var $modal = $('.weixin-share-modal');
-    $modal.on('show.bs.modal', function() {
-      $modal.find('.weixin-share-qrcode').empty();
-      $modal.find('.weixin-share-loading').show();
-      $modal.find('.weixin-share-qrcode').html('<img src="http://qr.liantu.com/api.php?w=250&text=' + encodeURIComponent(params.url) + '">');
-      $modal.find('.weixin-share-qrcode img').load(function() {
-        $modal.find('.weixin-share-loading').hide();
-      });
-    });
-  }
+    if (jQuery('.weixin-share-modal').length === 0) {
+        jQuery('body').append(makeWeixinModal(params));
+        var $modal = jQuery('.weixin-share-modal');
+        $modal.on('show.bs.modal', function () {
+            $modal.find('.weixin-share-qrcode').empty();
+            $modal.find('.weixin-share-loading').show();
+            $modal.find('.weixin-share-qrcode').html('<img src="http://qr.liantu.com/api.php?w=250&text=' + encodeURIComponent(params.url) + '">');
+            $modal.find('.weixin-share-qrcode img').load(function () {
+                $modal.find('.weixin-share-loading').hide();
+            });
+        });
+    }
 
-  $('.weixin-share-modal').modal('show');
+    jQuery('.weixin-share-modal').modal('show');
 }
 
 function makeWeixinModal(params) {
-  var html = '';
-  html += '<div class="modal fade weixin-share-modal" tabindex="-1" role="dialog" aria-hidden="true">';
-  html += '  <div class="modal-dialog modal-sm">';
-  html += '    <div class="modal-content">';
-  html += '      <div class="modal-header">';
-  html += '        <button type="button" class="close" data-dismiss="modal" aria-label="关闭"><span aria-hidden="true">×</span></button>';
-  html += '        <h4 class="modal-title">分享到微信朋友圈</h4>';
-  html += '      </div>';
-  html += '      <div class="modal-body">';
-  html += '        <p class="weixin-share-loading" style="text-align:center;">正在加载二维码...</p>';
-  html += '        <p class="weixin-share-qrcode"></p>';
-  html += '        <p class="text-muted"><small>打开微信，点击底部的“发现”，</small><br><small>使用 “扫一扫” 即可将网页分享到我的朋友圈。</small></p>';
-  html += '      </div>';
-  html += '    </div>';
-  html += '  </div>';
-  html += '</div>';
-  return html;
+    var html = '';
+    html += '<div class="modal fade weixin-share-modal" tabindex="-1" role="dialog" aria-hidden="true">';
+    html += '  <div class="modal-dialog modal-sm">';
+    html += '    <div class="modal-content">';
+    html += '      <div class="modal-header">';
+    html += '        <button type="button" class="close" data-dismiss="modal" aria-label="关闭"><span aria-hidden="true">×</span></button>';
+    html += '        <h4 class="modal-title">分享到微信朋友圈</h4>';
+    html += '      </div>';
+    html += '      <div class="modal-body">';
+    html += '        <p class="weixin-share-loading" style="text-align:center;">正在加载二维码...</p>';
+    html += '        <p class="weixin-share-qrcode"></p>';
+    html += '        <p class="text-muted"><small>打开微信，点击底部的“发现”，</small><br><small>使用 “扫一扫” 即可将网页分享到我的朋友圈。</small></p>';
+    html += '      </div>';
+    html += '    </div>';
+    html += '  </div>';
+    html += '</div>';
+    return html;
 }
 
 
 function weibo(params) {
-  var query = {};
-  query.url = params.url;
-  query.title = params.message;
-  query.pic = params.picture;
-  query.appkey = params.appkey;
-  return 'http://service.weibo.com/share/share.php?' + buildUrlQuery(query);
+    var query = {};
+    query.url = params.url;
+    query.title = params.message;
+    query.pic = params.picture;
+    query.appkey = params.appkey;
+    return 'http://service.weibo.com/share/share.php?' + buildUrlQuery(query);
 }
 
 function qzone(params) {
-  var query = {};
-  query.url = params.url;
-  query.title = params.title;
-  query.summary = params.summary;
-  query.desc = params.message;
-  query.pics = params.picture;
-  query.appkey = params.appkey;
-  return 'http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?' + buildUrlQuery(query);
+    var query = {};
+    query.url = params.url;
+    query.title = params.title;
+    query.summary = params.summary;
+    query.desc = params.message;
+    query.pics = params.picture;
+    query.appkey = params.appkey;
+    return 'http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?' + buildUrlQuery(query);
 }
 
 function qq(params) {
-  var query = {};
+    var query = {};
 
-  query.url = params.url;
-  query.title = params.title;
-  query.summary = params.summary;
-  query.desc = params.message;
-  query.pics = params.picture;
-  query.appkey = params.appkey;
-  return 'http://connect.qq.com/widget/shareqq/index.html?' + buildUrlQuery(query);
+    query.url = params.url;
+    query.title = params.title;
+    query.summary = params.summary;
+    query.desc = params.message;
+    query.pics = params.picture;
+    query.appkey = params.appkey;
+    return 'http://connect.qq.com/widget/shareqq/index.html?' + buildUrlQuery(query);
+}
+
+
+function facebook(params) {
+    return 'https://www.facebook.com/sharer/sharer.php?s=100&&p[title]=' +  params.message + '&&p[url]=' +params.url;
+}
+
+function twitter(params) {
+    var query = {};
+    query.url = params.url;
+    query.text = params.message;
+    return 'https://twitter.com/intent/tweet?' + buildUrlQuery(query);
+}
+
+function google(params) {
+    var query = {};
+    query.url = params.url;
+    return 'https://plus.google.com/share?' + buildUrlQuery(query);
 }
 
 function douban(params) {
-  var query = {};
-  query.href = params.url;
-  query.name = params.message;
-  query.text = params.summary;
-  query.image = params.picture;
-  query.appkey = params.appkey;
-  return 'http://www.douban.com/share/service?' + buildUrlQuery(query);
+    var query = {};
+    query.href = params.url;
+    query.name = params.message;
+    query.text = params.summary;
+    query.image = params.picture;
+    query.appkey = params.appkey;
+    return 'http://www.douban.com/share/service?' + buildUrlQuery(query);
 }
 
 function renren(params) {
-  var query = {};
-  query.resourceUrl = params.picture;
-  query.pic = params.picture;
-  query.srcUrl = params.url;
-  query.title = params.title;
-  query.description = params.message;
-  query.comment = params.summary;
-  query.appkey = params.appkey;
-  return 'http://widget.renren.com/dialog/share?' + buildUrlQuery(query);
+    var query = {};
+    query.resourceUrl = params.picture;
+    query.pic = params.picture;
+    query.srcUrl = params.url;
+    query.title = params.title;
+    query.description = params.message;
+    query.comment = params.summary;
+    query.appkey = params.appkey;
+    return 'http://widget.renren.com/dialog/share?' + buildUrlQuery(query);
 }
 
 function Share($container) {
-  $container.on('click', '[data-network]', function() {
-    var $btn = $(this),
-      type = $btn.data('network'),
-      appkey = $btn.data('appkey'),
-      params = $container.data();
+    $container.on('click', '[data-network]', function () {
+        var $btn = jQuery(this),
+            type = $btn.data('network'),
+            appkey = $btn.data('appkey'),
+            params = $container.data();
 
-    var url = '';
-    params.appkey = appkey;
-    switch (type) {
-      case 'weibo':
-        url = weibo(params);
-        _open(url);
-        break;
-      case 'qzone':
-        url = qzone(params);
-        _open(url);
-        break;
-      case 'qq':
-        url = qq(params);
-        _open(url);
-        break;
-      case 'douban':
-        _open(douban(params));
-        break;
-      case 'renren':
-        _open(renren(params));
-        break;
-      case 'wechat':
-        weixin($btn, params);
-        break;
-    }
-  });
+        var url = '';
+        params.appkey = appkey;
+        switch (type) {
+            case 'weibo':
+                url = weibo(params);
+                _open(url);
+                break;
+            case 'qzone':
+                url = qzone(params);
+                _open(url);
+                break;
+            case 'qq':
+                url = qq(params);
+                _open(url);
+                break;
+            case 'twitter':
+                url = twitter(params);
+                _open(url);
+                break;
+            case 'facebook':
+                url = facebook(params);
+                _open(url);
+                break;
+            case 'google':
+                url = google(params);
+                _open(url);
+                break;
+            case 'douban':
+                _open(douban(params));
+                break;
+            case 'renren':
+                _open(renren(params));
+                break;
+            case 'wechat':
+                weixin($btn, params);
+                break;
+        }
+    });
 }
 
-$.fn.share = function () {
+jQuery.fn.share = function () {
   return this.each(function() {
-    var $container = $(this),
+    var $container = jQuery(this),
       instance;
     //initialize the Share.js
     instance = new Share($container);
