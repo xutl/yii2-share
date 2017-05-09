@@ -5,7 +5,7 @@ function weixin($btn, params) {
         $modal.on('show.bs.modal', function () {
             $modal.find('.weixin-share-qrcode').empty();
             $modal.find('.weixin-share-loading').show();
-            $modal.find('.weixin-share-qrcode').html('<img src="https://qr.liantu.com/api.php?w=250&text=' + encodeURIComponent(params.url) + '">');
+            $modal.find('.weixin-share-qrcode').html('<img src="http://qr.liantu.com/api.php?w=250&text=' + encodeURIComponent(params.url) + '">');
             $modal.find('.weixin-share-qrcode img').load(function () {
                 $modal.find('.weixin-share-loading').hide();
             });

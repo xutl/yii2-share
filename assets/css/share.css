@@ -1,0 +1,41 @@
+/* share */
+.share {
+    margin-bottom: 20px;
+}
+
+.share ul {
+    list-style: none;
+    display: inline;
+    margin: 0;
+    padding: 0;
+    vertical-align: text-bottom;
+}
+
+.share li {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.share .share-wechat {
+    color: #62b900
+}
+
+.share .share-qq {
+    color: #008eca
+}
+
+.share .share-weibo {
+    color: #ff0000
+}
+
+.share .share-facebook {
+    color: #4267b2
+}
+
+.share .share-google {
+    color: #4285f4
+}
+
+.share .share-twitter {
+    color: #1b95e0
+}

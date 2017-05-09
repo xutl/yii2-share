@@ -20,6 +20,10 @@ class ShareAsset extends AssetBundle
      */
     public $sourcePath = '@vendor/xutl/yii2-share-widget/assets';
 
+    public $css = [
+        'css/share.css'
+    ];
+
     /**
      * @inherit
      */

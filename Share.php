@@ -69,7 +69,9 @@ class Share extends Widget
      * @var array the HTML attributes for the input tag.
      * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
      */
-    public $options = [];
+    public $options = ['class' => 'share'];
+
+    public $icon_size = 'lg';
 
     /**
      * @inheritdoc
@@ -135,10 +137,10 @@ class Share extends Widget
         $items = [];
         foreach ($this->items as $item) {
             $name = self::t(ArrayHelper::getValue($this->shareMapping, $item));
-            $icon = Html::tag('i', '', ['class' => "fa fa-{$item}", 'aria-hidden' => true]);
+            $icon = Html::tag('i', '', ['class' => "fa fa-{$this->icon_size} fa-{$item} share-{$item}", 'aria-hidden' => 'true']);
             $link = Html::a($icon, 'javascript:void(0);', [
                 'data' => ['toggle' => 'tooltip', 'placement' => 'top', 'original-title' => self::t('Share to {name}', ['name' => $name])]
-                ]);
+            ]);
             $items[] = Html::tag('li', $link, ['data' => ['network' => $item]]);
         }
         return Html::tag('ul', implode("\n", $items), $this->itemOptions);
