@@ -27,6 +27,7 @@ $('ul').share();
 
 ### API
 
+* `data-title` 分享的当前页面标题
 * `data-url` 分享的当前页面地址或者其他地址
 * `data-message` 分享的标题
 * `data-summary` 分享内容，「只对QQ空间、豆瓣、和人人有效」
