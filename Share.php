@@ -11,6 +11,7 @@ use Yii;
 use yii\helpers\Html;
 use yii\base\Widget;
 use yii\helpers\Json;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class Share
@@ -43,7 +44,7 @@ class Share extends Widget
      */
     protected $shareMapping = [
         "qq" => 'QQ', // 腾讯QQ
-        "qzone" => 'QQ空间', // QQ空间
+        "qzone" => 'QZone', // QQ空间
         "wechat" => 'Wechat', // 微信
         "weibo" => 'Weibo', // 微博
         "renren" => 'Renren', // 人人
@@ -62,7 +63,7 @@ class Share extends Widget
      * @var array the HTML attributes for the input tag.
      * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
      */
-    public $ulOptions = [];
+    public $itemOptions = [];
 
     /**
      * @var array the HTML attributes for the input tag.
@@ -76,6 +77,7 @@ class Share extends Widget
     public function init()
     {
         parent::init();
+        $this->registerTranslations();
         if (!isset ($this->options ['id'])) {
             $this->options ['id'] = $this->getId();
         }
@@ -88,27 +90,57 @@ class Share extends Widget
     }
 
     /**
+     * 注册语言包
+     */
+    public function registerTranslations()
+    {
+        Yii::$app->i18n->translations['xutl/share/*'] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'sourceLanguage' => 'en-US',
+            'basePath' => '@xutl/share/messages',
+            'fileMap' => [
+                'xutl/share/share' => 'share.php',
+            ],
+        ];
+    }
+
+    /**
+     * 获取语言包
+     * @param string $message
+     * @param array $params
+     * @param null $language
+     * @return string
+     */
+    public static function t($message, $params = [])
+    {
+        return Yii::t('xutl/share/share', $message, $params);
+    }
+
+    /**
      * run
      */
     public function run()
     {
-        echo Html::beginTag('div', $this->options);
-        echo Html::tag('ul', $this->renderWidget());
-        echo Html::endTag('div');
+        echo Html::tag('div', $this->renderWidget(), $this->options);
         ShareAsset::register($this->view);
         $this->view->registerJs("jQuery('#{$this->options['id']}').share();");
     }
 
+    /**
+     * 渲染UL
+     * @return string
+     */
     public function renderWidget()
     {
         $items = [];
-        foreach ($this->items as $key => $value) {
-            $a = Html::a($value, 'javascript:void(0);', [
-                'class' => "entypo-{$key} icon-sn-{$key} share",
-                'data' => ['toggle' => 'tooltip', 'placement' => 'top', 'title' => '', 'original-title' => '分享至' . $value],
-            ]);
-            $items[] = Html::tag('li', $a, ['data' => ['network' => $key]]);
+        foreach ($this->items as $item) {
+            $name = self::t(ArrayHelper::getValue($this->shareMapping, $item));
+            $icon = Html::tag('i', '', ['class' => "fa fa-{$item}", 'aria-hidden' => true]);
+            $link = Html::a($icon, 'javascript:void(0);', [
+                'data' => ['toggle' => 'tooltip', 'placement' => 'top', 'original-title' => self::t('Share to {name}', ['name' => $name])]
+                ]);
+            $items[] = Html::tag('li', $link, ['data' => ['network' => $item]]);
         }
-        return implode("\n", $items);
+        return Html::tag('ul', implode("\n", $items), $this->itemOptions);
     }
 }
