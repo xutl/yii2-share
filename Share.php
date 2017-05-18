@@ -107,10 +107,43 @@ class Share extends Widget
     }
 
     /**
+     * 获取分享Key
+     * @param string $platform
+     * @return bool
+     */
+    public function getShareKey($platform)
+    {
+        if (Yii::$app->has('authClientCollection')) {
+            /** @var \yii\authclient\ClientInterface[] $clients */
+            $clients = Yii::$app->get('authClientCollection')->clients;
+            if (isset($clients[$platform])) {
+                switch ($platform) {
+                    case 'facebook':
+                    case 'google':
+                    case 'linkedin':
+                    case 'live':
+                    case 'twitter':
+                    case 'vkontakte':
+                    case 'yandex':
+                    case 'douban':
+                    case 'qq':
+                    case 'wechat':
+                    case 'weibo':
+                        $clientId = $clients[$platform]->clientId;
+                        break;
+                    default:
+                        $clientId = false;
+                }
+                return $clientId;
+            }
+        }
+        return false;
+    }
+
+    /**
      * 获取语言包
      * @param string $message
      * @param array $params
-     * @param null $language
      * @return string
      */
     public static function t($message, $params = [])
@@ -136,12 +169,13 @@ class Share extends Widget
     {
         $items = [];
         foreach ($this->items as $item) {
+            $appkey = $this->getShareKey($item);
             $name = self::t(ArrayHelper::getValue($this->shareMapping, $item));
             $icon = Html::tag('i', '', ['class' => "fa fa-{$this->icon_size} fa-{$item} share-{$item}", 'aria-hidden' => 'true']);
             $link = Html::a($icon, 'javascript:void(0);', [
                 'data' => ['toggle' => 'tooltip', 'placement' => 'top', 'original-title' => self::t('Share to {name}', ['name' => $name])]
             ]);
-            $items[] = Html::tag('li', $link, ['data' => ['network' => $item]]);
+            $items[] = Html::tag('li', $link, ['data' => ['network' => $item, 'appkey' => $appkey]]);
         }
         return Html::tag('ul', implode("\n", $items), $this->itemOptions);
     }
